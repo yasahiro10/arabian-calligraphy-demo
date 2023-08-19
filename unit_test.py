@@ -14,3 +14,4 @@ class TestDataLoader(unittest.TestCase):
         dataset = dataloader_normal()
         first_data = dataset[0]
         logger.debug(first_data)
+        print(dataset[0][0].size())
