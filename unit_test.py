@@ -1,6 +1,8 @@
 import unittest
 
-from src.dataloader import dataloader_normal
+from matplotlib import pyplot as plt
+
+from src.dataloader import dataloader_normal,dataloader_binairy
 from src.utils.setup_logger import logger
 
 
@@ -10,10 +12,14 @@ class TestDataLoader(unittest.TestCase):
         dataset = dataloader_binairy()
         first_data = dataset[0]
         logger.debug(first_data)
+        plt.imshow(first_data[0].numpy(),cmap='gray')
+        plt.show()
 
-    #def test_dataloader_length(self):
+    def test_dataloader_length(self):
 
-       # dataset = dataloader_normal()
-       # first_data = dataset[0]
-        #logger.debug(first_data)
+        dataset = dataloader_normal()
+        first_data = dataset[0]
+        logger.debug(first_data[0].numpy().shape)
+        plt.imshow(first_data[0].numpy().transpose(1, 2, 0))
+        plt.show()
 

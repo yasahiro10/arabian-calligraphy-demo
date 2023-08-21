@@ -6,7 +6,7 @@ from torchvision import transforms
 from src.utils.setup_logger import logger
 from PIL import Image
 import cv2
-
+import matplotlib.pyplot as plt
 
 class dataloader_normal():
     """ Simple dataloader which return original images"""
@@ -45,15 +45,18 @@ class dataloader_binairy():
                          delimiter=",")
         L = xy.iloc[:, 0].tolist()  # Assuming the first column is for x data
         for i in L:
-            image = Image.open('C:/Users/msi/PycharmProjects/arabian-calligraphy-demo/data/train/{}'.format(i))
-            image = cv2.imread('C:/Users/msi/PycharmProjects/arabian-calligraphy-demo/data/train/{}'.format(i),
-                               cv2.IMREAD_GRAYSCALE)
-            binary_image = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+            image_tn = Image.open('C:/Users/msi/PycharmProjects/arabian-calligraphy-demo/data/train/{}'.format(i))
+            image_np = np.array(image_tn)
+            image_gray=cv2.cvtColor(image_np,cv2.COLOR_BGR2GRAY)
+            # Convert the numpy array to a format compatible with OpenCV
+            image = np.squeeze(image_gray)  # Remove any single-dimensional dimensions
+            image = (image * 255).astype(np.uint8)
+            _, binary_image = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             to_tensor = transforms.ToTensor()
             image_tensor.append(to_tensor(binary_image))
         self.x = image_tensor
         self.n_samples = xy.shape[0]
-    def __getitem__(self, item):
+    def __getitem__(self, index):
         x_item = self.x[index]
         return x_item
 
