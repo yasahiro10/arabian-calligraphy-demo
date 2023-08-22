@@ -1,4 +1,6 @@
 import torch
+from numpy import asarray
+from torch import Tensor
 from torch.utils.data import Dataset
 import numpy as np
 import pandas as pd
@@ -7,23 +9,32 @@ from src.utils.setup_logger import logger
 from PIL import Image
 import cv2
 import matplotlib.pyplot as plt
+# TODO: optimize imports
 
 class dataloader_normal():
     """ Simple dataloader which return original images"""
 
     def __init__(self):
         image_tensor = []
-        xy = pd.read_csv('C:/Users/msi/PycharmProjects/arabian-calligraphy-demo/data/train/annotations.csv',
+
+        # TODO: use relative path (data/train/...)
+        # TODO: Change the dataframe name (do not use xy)
+        # xy = pd.read_csv('C:/Users/msi/PycharmProjects/arabian-calligraphy-demo/data/train/annotations.csv',
+        #                  delimiter=",")
+        xy = pd.read_csv('/home/bobmarley/PycharmProjects/arabian-calligraphy-demo/data/train/_annotations.csv',
                          delimiter=",")
         L = xy.iloc[:, 0].tolist()  # Assuming the first column is for x data
+        logger.debug(f"the L ist: {L}")
         for i in L:
-            image = Image.open('C:/Users/msi/PycharmProjects/arabian-calligraphy-demo/data/train/{}'.format(i))
-            to_tensor = transforms.ToTensor()
-            image_tensor.append(to_tensor(image))
+            # image = Image.open('C:/Users/msi/PycharmProjects/arabian-calligraphy-demo/data/train/{}'.format(i))
+            image = asarray(Image.open('/home/bobmarley/PycharmProjects/arabian-calligraphy-demo/data/train/{}'.format(i)))
+            # TODO: append only cropped bounding boxes
+            image_tensor.append(Tensor(image))
         self.x = image_tensor
         self.y = xy.iloc[:, 3]
         self.z = xy.iloc[:, 4:].values  # Convert DataFrame to NumPy array because the other columns
         self.n_samples = xy.shape[0]
+
 
     def __getitem__(self, index):
         x_item = self.x[index]

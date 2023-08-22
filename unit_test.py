@@ -1,13 +1,26 @@
 import unittest
 
 from matplotlib import pyplot as plt
-
+import pandas as pd
 from src.dataloader import dataloader_normal,dataloader_binairy
 from src.utils.setup_logger import logger
 
 
 class TestDataLoader(unittest.TestCase):
 
+    def test_length_annotation(self):
+        # TODO: dataset should contains something like that: returned by dataset
+        #       { "cropped_bbox" : [tensors...],
+        #         "bbox":  [[x,y,w,h]...],
+        #         "label":[label1,..]
+        #       }
+        annotation = pd.read_csv('data/train/_annotations.csv')
+        logger.debug(annotation.shape[0])
+        dataset = dataloader_normal()
+        logger.debug(dataset)
+        self.assertEquals(annotation.shape[0], len(dataset['cropped_bbox']))
+        self.assertEquals(annotation.shape[0], len(dataset['bbox']))
+        self.assertEquals(annotation.shape[0], len(dataset['label']))
     def test_binary(self):
         dataset = dataloader_binairy()
         first_data = dataset[0]
