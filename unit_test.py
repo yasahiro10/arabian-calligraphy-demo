@@ -1,5 +1,4 @@
 import unittest
-
 from matplotlib import pyplot as plt
 import pandas as pd
 from src.dataloader import dataloader_normal,dataloader_binairy
@@ -17,10 +16,10 @@ class TestDataLoader(unittest.TestCase):
         annotation = pd.read_csv("data/train/annotations.csv")
         #logger.debug(annotation["class"])
         dataset = dataloader_normal()
-        logger.debug(dataset[0])
-        #self.assertEquals(annotation.shape[0], len(dataset['cropped_bbox']))
-        #self.assertEquals(annotation.shape[0], len(dataset['bbox']))
-        #self.assertEqual(annotation.shape[0], len(dataset))
+        #logger.debug(dataset[:]['bbx'])
+        self.assertEqual(annotation.shape[0], len(dataset[:]['cropped_bbox']))
+        self.assertEqual(annotation.shape[0], len(dataset[:]['bbx']))
+        self.assertEqual(annotation.shape[0], len(dataset[:]['class']))
     def test_binary(self):
         dataset = dataloader_binairy()
         first_data = dataset[1]
