@@ -11,30 +11,28 @@ class dataloader_normal():
     def __init__(self):
         image_tensor = []
         to_tensor = transforms.ToTensor()
-        # TODO: use relative path (data/train/...)done
-        # TODO: Change the dataframe name (do not use xy) done
-        Calligraphy_data= pd.read_csv('data/train/annotations.csv', delimiter=",")
-        for index,row in Calligraphy_data.iterrows():
+        calligraphy_data= pd.read_csv('data/train/_annotations.csv', delimiter=",")
+        for index,row in calligraphy_data.iterrows():
             image_path=row['filename']
             xmin, ymin, xmax, ymax = row['xmin'], row['ymin'], row['xmax'], row['ymax']
             image = Image.open('data/train/{}'.format(image_path))
             cropped_image = image.crop((xmin, ymin, xmax, ymax))
-            # TODO: append only cropped bounding boxes done
+            # TODO: apply transopose before putting image into list
             image_tensor.append(to_tensor(cropped_image))
-        self.x =image_tensor
-        self.y =Calligraphy_data.iloc[:, 3]
-        self.z =Calligraphy_data.iloc[:, 4:].values  # Convert DataFrame to NumPy array because the other columns
-        self.n_samples = Calligraphy_data.shape[0]
+
+        self.data = {
+            "cropped_bbox": image_tensor,
+            "bbox": calligraphy_data.iloc[:, 4:].values,
+            "label": calligraphy_data.iloc[:, 3]
+        }
+
 
 
     def __getitem__(self, index):
-        x_item = self.x[index]
-        y_item = self.y[index]
-        z_item = self.z[index]
-        return  dict({"cropped_bbox":x_item,"bbx":z_item,"class":y_item})
+        return  self.data["cropped_bbox"][index],self.data["bbox"][index],self.data["label"][index]
 
     def __len__(self):
-        return self.n_samples
+        return len(self.data["label"])
 
 
 class dataloader_binairy():
