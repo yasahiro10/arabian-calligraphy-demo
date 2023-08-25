@@ -16,7 +16,7 @@ class TestDataLoader(unittest.TestCase):
         annotation = pd.read_csv("C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv")
         dataset = dataloader_normal("C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv", "C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/images")
         
-        logging.debug(dataset[0])  
+        logging.debug(dataset[1])  
 
         plt.imshow(dataset.data["cropped_bbox"][0])
         plt.show()
@@ -29,7 +29,7 @@ class TestDataLoader(unittest.TestCase):
         
         annotation = pd.read_csv("C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv")
         dataset = dataloader_normal("C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv", "C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/images")
-        first_data = dataset[0]
+        first_data = dataset[1]
         
         logging.debug(first_data)
         logging.debug(first_data[0].numpy().shape)
