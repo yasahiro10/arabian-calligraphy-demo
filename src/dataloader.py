@@ -36,7 +36,7 @@ if __name__ == '__main__':
     images_folder = 'C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/images'
     
     dataset = dataloader_normal(annotations_file, images_folder)
-    example_item = dataset[0]
+    example_item = dataset[1]
     logging.debug(example_item)
 
 class dataloader_binairy_image:
