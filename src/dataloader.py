@@ -2,7 +2,8 @@ import logging
 import torch
 import torchvision.transforms as transforms
 from PIL import Image
-from torch.utils.dataan import Dataset
+from torch.utils.data import Dataset
+import pandas as pd
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -21,7 +22,7 @@ class dataloader_normal(Dataset):
         xmin, ymin, xmax, ymax = annotation['xmin'], annotation['ymin'], annotation['xmax'], annotation['ymax']
         label = annotation['class']
 
-        image = Image.open(f'{self.images_folder}/{image_path}').convert('RGB')
+        image = Image.open(f'C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/images').convert('RGB')
         cropped_image = image.crop((xmin, ymin, xmax, ymax))
         cropped_image_tensor = self.to_tensor(cropped_image)
 
