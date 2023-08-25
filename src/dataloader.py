@@ -10,7 +10,7 @@ class dataloader_normal():
     def __init__(self):
         image_tensor = []
         to_tensor = transforms.ToTensor()
-        calligraphy_data= pd.read_csv('data/train/annotations.csv', delimiter=",")
+        calligraphy_data= pd.read_csv('data/train/_annotations.csv', delimiter=",")
         for index,row in calligraphy_data.iterrows():
             image_path=row['filename']
             xmin, ymin, xmax, ymax = row['xmin'], row['ymin'], row['xmax'], row['ymax']
@@ -28,7 +28,7 @@ class dataloader_normal():
     def __repr__(self):
         return repr(self.data)
     def __getitem__(self, index):
-        return self.data[index]
+        return self.data["cropped_bbox"][index], self.data["bbox"][index], self.data["label"][index]
 
     def __len__(self):
         return len(self.data["label"])
