@@ -1,7 +1,7 @@
 import unittest
 from matplotlib import pyplot as plt
 import pandas as pd
-from src.dataloader import dataloader_normal
+import dataloader_normal
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
