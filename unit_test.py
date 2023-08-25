@@ -8,12 +8,7 @@ from src.utils.setup_logger import logger
 class TestDataLoader(unittest.TestCase):
 
     def test_length_annotation(self):
-        # TODO: dataset should contains something like that: returned by dataset
-        #       { "cropped_bbox" : [tensors...],
-        #         "bbox":  [[x,y,w,h]...],
-        #         "label":[label1,..]
-        #       }
-        annotation = pd.read_csv("data/train/_annotations.csv")
+        annotation = pd.read_csv("data/train/annotations.csv")
         dataset = dataloader_normal()
         logger.debug(dataset[0])
 

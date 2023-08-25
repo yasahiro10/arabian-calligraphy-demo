@@ -25,8 +25,8 @@ class dataloader_normal():
             "label": calligraphy_data.iloc[:,3]
         }
 
-    def __repr__(self):
-        return repr(self.data)
+    # def __repr__(self):
+    #     return repr(self.data)
     def __getitem__(self, index):
         return self.data["cropped_bbox"][index], self.data["bbox"][index], self.data["label"][index]
 
@@ -59,8 +59,8 @@ class dataloader_binairy():
             "label": calligraphy_data.iloc[:, 3]
         }
 
-    def __repr__(self):
-        return repr(self.data)
+    # def __repr__(self):
+    #     return repr(self.data)
 
     def __getitem__(self, index):
         return self.data[index]
