@@ -1,7 +1,7 @@
 import unittest
 from matplotlib import pyplot as plt
 import pandas as pd
-import dataloader_normal
+from src.dataloader import dataloader_normal
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -16,7 +16,7 @@ class TestDataLoader(unittest.TestCase):
         annotation = pd.read_csv("C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv")
         dataset = dataloader_normal("C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv", "C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/images")
         
-        logging.debug(dataset[0])  # Utiliser logging.debug au lieu de 35.debug
+        logging.debug(dataset[0])  
 
         plt.imshow(dataset.data["cropped_bbox"][0])
         plt.show()
@@ -27,8 +27,8 @@ class TestDataLoader(unittest.TestCase):
 
     def test_dataloader_length(self):
         
-        annotation = pd.read_csv("data/train/_annotations.csv")
-        dataset = dataloader_normal("data/train/_annotations.csv", "data/train/images")
+        annotation = pd.read_csv("C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv")
+        dataset = dataloader_normal("C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv", "C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/images")
         first_data = dataset[0]
         
         logging.debug(first_data)

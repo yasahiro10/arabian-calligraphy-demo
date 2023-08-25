@@ -22,7 +22,7 @@ class dataloader_normal(Dataset):
         xmin, ymin, xmax, ymax = annotation['xmin'], annotation['ymin'], annotation['xmax'], annotation['ymax']
         label = annotation['class']
 
-        image = Image.open(f'C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/images').convert('RGB')
+        image = Image.open(f'{self.images_folder}/{image_path}').convert('RGB')
         cropped_image = image.crop((xmin, ymin, xmax, ymax))
         cropped_image_tensor = self.to_tensor(cropped_image)
 
@@ -33,7 +33,7 @@ class dataloader_normal(Dataset):
 
 if __name__ == '__main__':
     annotations_file = 'C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv'
-    images_folder = 'C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data'
+    images_folder = 'C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/images'
     
     dataset = dataloader_normal(annotations_file, images_folder)
     example_item = dataset[0]
