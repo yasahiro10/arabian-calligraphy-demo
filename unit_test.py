@@ -1,6 +1,8 @@
 import unittest
-import logging
-from dataloader_normal import dataloader_normal  
+from matplotlib import pyplot as plt
+import pandas as pd
+from src.dataloader import dataloader_normal, dataloader_binairy
+from src.utils.setup_logger import logger 
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -10,29 +12,32 @@ class TestDataLoader(unittest.TestCase):
         pass 
     
     def test_length_annotation(self):
-        data_file = 'C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv'  
-        images_folder = ':/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data'  
+        
+        annotation = pd.read_csv("C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv")
+        dataset = dataloader_normal("C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data")
+        
+        logger.debug(dataset[0])
 
-        dataset = dataloader_normal(data_file, images_folder)
-        data_length = len(dataset)
+        plt.imshow(dataset.data["cropped_bbox"][0])
+        plt.show()
 
-        annotations = dataset.load_data(data_file)['images']
-        annotations_length = len(annotations)
-
-        logging.debug(f"Data length: {data_length}, Annotations length: {annotations_length}")
-        self.assertEqual(data_length, annotations_length)
+        self.assertEqual(annotation.shape[0], len(dataset.data["cropped_bbox"]))
+        self.assertEqual(annotation.shape[0], len(dataset.data["bbox"]))
+        self.assertEqual(annotation.shape[0], len(dataset.data["label"]))
 
     def test_dataloader_length(self):
         
-        data_file = 'C:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data/_annotations.csv'  
-        images_folder = 'p:/Users/ACER/Desktop/Stage/code/arabian-calligraphy-demo/Data'  
+        annotation = pd.read_csv("data/train/_annotations.csv")
+        dataset = dataloader_normal("data/train/_annotations.csv", "data/train/images")
+        first_data = dataset[0]
+        
+        logger.debug(first_data)
+        logger.debug(first_data[0].numpy().shape)
+        
+        plt.imshow(first_data[0].numpy().transpose(1, 2, 0))
+        plt.show()
 
-        dataset = dataloader_normal(data_file, images_folder)
+        self.assertEqual(annotation.shape[0], len(dataset.data["cropped_bbox"]))
 
-        expected_length = len(dataset.load_data(data_file)['images'])
-        actual_length = len(dataset)
-
-        logging.debug(f"Expected length: {expected_length}, Actual length: {actual_length}")
-        self.assertEqual(actual_length, expected_length)
-
-        pass
+if __name__ == '__main__':
+    unittest.main()
