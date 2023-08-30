@@ -1,7 +1,7 @@
 import unittest
 from matplotlib import pyplot as plt
 import pandas as pd
-from src.dataloader import dataloader_normal,dataloader_binairy
+from src.dataloader import dataloader_normal,dataloader_binairy,dataloader_augmented
 from src.utils.setup_logger import logger
 
 
@@ -33,7 +33,10 @@ class TestDataLoader(unittest.TestCase):
         dataset = dataloader_normal()
         first_data = dataset[0]
         logger.debug(first_data)
-        logger.debug(first_data[0].numpy().shape)
-        plt.imshow(first_data[0].numpy().transpose(1, 2, 0))
+        logger.debug(first_data[0])
+        plt.imshow(first_data[0])
         plt.show()
 
+    def test_dataloader_augmented(self):
+        dataset = dataloader_augmented()
+        logger.debug(dataset[0])
