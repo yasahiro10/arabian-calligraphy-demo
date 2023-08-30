@@ -67,3 +67,26 @@ class dataloader_binairy():
 
     def __len__(self):
         return len(self.data["label"])
+
+
+
+class dataloader_augmented:
+
+    def  __int__(self, augmentation_type, *params):
+        """
+TODO:
+        :param augmentation_type: list of string contains the possible augmentation, it can be:
+            - Rotation (without a big angle)
+            - Gaussian blur
+            - Contrast and brightness
+            - Adding noise
+        :param params: params of the augmentation
+        :return:
+        """
+        pass
+    def __getitem__(self, item):
+        pass
+
+    def __len__(self):
+        pass
+    pass
