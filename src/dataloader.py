@@ -73,11 +73,9 @@ class AddGaussianNoise(object):
     def __repr__(self):
         return self.__class__.__name__ + '(mean={0}, std={1})'.format(self.mean, self.std)
 
-class dataloader_augmented():
-
-    def  __int__(self, augmentation_type, *params):
+class dataloader_augmented:
+    def  __init__(self, augmentation_type=[], *params):
         """
-TODO:
         :param augmentation_type: list of string contains the possible augmentation, it can be:
             - Rotation (without a big angle)
             - Gaussian blur
@@ -89,23 +87,21 @@ TODO:
         self.augmentation_type = augmentation_type
         self.params = params
         Rotate_Transformation = transforms.Compose([
-            transforms.ToPILImage(),
-            transforms.RandomRotation(degrees=params[0])
+
+            transforms.RandomRotation(degrees=params[0]),
         ])
         Gaussian_transformation = transforms.Compose([
-            transforms.ToPILImage(),
-            transforms.GaussianBlur(kernel_size=(params[1],params[2]), sigma=(params[3],params[4]))])
-        Color_Transformation = transforms.Compose([
-            transforms.ToPILImage(),
-            transforms.ColorJitter(brightness=(params[5],params[6]),contrast=params[7])
-        ])
-        AddGaussianNoise_Transformation= transforms.Compose([
-            transforms.ToPILImage(),
-            transforms.ToTensor(),
-            AddGaussianNoise(params[8], params[9]),
-            transforms.ToPILImage()
-        ])
-
+           transforms.GaussianBlur(kernel_size=(params[1],params[2]), sigma=(params[3],params[4]))])
+        # Color_Transformation = transforms.Compose([
+        #     transforms.ToPILImage(),
+        #     transforms.ColorJitter(brightness=(params[5],params[6]),contrast=params[7])
+        # ])
+        # AddGaussianNoise_Transformation= transforms.Compose([
+        #     transforms.ToPILImage(),
+        #     transforms.ToTensor(),
+        #     AddGaussianNoise(params[8], params[9]),
+        #     transforms.ToPILImage()
+        # ])
         image_tensor = []
         to_tensor = transforms.ToTensor()
         calligraphy_data = pd.read_csv('data/train/annotations.csv',
@@ -127,12 +123,12 @@ TODO:
                 if item == "Gaussian blur":
                     Gaussian_image = Gaussian_transformation(cropped_image)
                     image_tensor.append(to_tensor(Gaussian_image).numpy().transpose(1, 2, 0))
-                if item ==  "ColorJitter":
-                    color_image = Color_Transformation(cropped_image)
-                    image_tensor.append(to_tensor(color_image).numpy().transpose(1, 2, 0))
-                if item == "GaussianNoise":
-                    noise_image= AddGaussianNoise_Transformation(cropped_image)
-                    image_tensor.append(to_tensor(noise_image).numpy().transpose(1, 2, 0))
+                # if item ==  "ColorJitter":
+                #     color_image = Color_Transformation(cropped_image)
+                #     image_tensor.append(to_tensor(color_image).numpy().transpose(1, 2, 0))
+                # if item == "GaussianNoise":
+                #     noise_image= AddGaussianNoise_Transformation(cropped_image)
+                #     image_tensor.append(to_tensor(noise_image).float().numpy().transpose(1, 2, 0))
         self.data = {
             "cropped_bbox": image_tensor,
             "bbox": calligraphy_data.iloc[:, 4:].values,

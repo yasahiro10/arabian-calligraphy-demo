@@ -38,5 +38,8 @@ class TestDataLoader(unittest.TestCase):
         plt.show()
 
     def test_dataloader_augmented(self):
-        dataset = dataloader_augmented()
+        dataset = dataloader_augmented(["Rotation","Gaussian blur"],((40,70),5,9,1,5))
         logger.debug(dataset[0])
+
+        plt.imshow(dataset.data["cropped_bbox"][0])
+        plt.show()
