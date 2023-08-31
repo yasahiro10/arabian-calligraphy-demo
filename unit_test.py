@@ -38,8 +38,42 @@ class TestDataLoader(unittest.TestCase):
         plt.show()
 
     def test_dataloader_augmented(self):
-        dataset = dataloader_augmented(["Rotation","Gaussian blur"],((40,70),5,9,1,5))
-        logger.debug(dataset[0])
-
+        dataset = dataloader_augmented(["Gaussian blur","ColorJitter","GaussianNoise"],0,23,(106.67, 106.67),(2,2),4,1,0.1)
+        logger.debug(len(dataset.data["cropped_bbox"]))
         plt.imshow(dataset.data["cropped_bbox"][0])
         plt.show()
+
+
+
+
+        #plt.figure(figsize=(10, 8))  # Adjust the figure size as needed
+        # #Subplot 1: Rotated Image
+        #plt.subplot(2, 2, 1)
+        #plt.imshow(dataset.data["cropped_bbox"][0])
+        #plt.title("Rotated Image")
+        #plt.axis('off')  # Turn off axis labels
+
+        # #Subplot 2: Blurred Image
+        #plt.subplot(2, 2, 2)
+        #plt.imshow(dataset.data["cropped_bbox"][1])
+        #plt.title("Blurred Image")
+        #plt.axis('off')  # Turn off axis labels
+
+        # #Subplot 3: Brightness and Contrast Adjusted Image
+        #plt.subplot(2, 2, 3)
+        #plt.imshow(dataset.data["cropped_bbox"][2])
+        #plt.title("Brightness and Contrast Adjusted Image")
+        #plt.axis('off')  # Turn off axis labels
+
+        ## Subplot 4: Image with Added Noise
+        #plt.subplot(2, 2, 4)
+        #plt.imshow(dataset.data["cropped_bbox"][3])
+        #plt.title("Image with Added Noise")
+        #plt.axis('off')  # Turn off axis labels
+
+        ## Adjust layout for spacing between subplots
+        #plt.tight_layout()
+
+        # Show the figure with all images
+        plt.show()
+
