@@ -75,15 +75,6 @@ class AddGaussianNoise(object):
 
 class dataloader_augmented:
     def  __init__(self, augmentation_type=[],degrees=0,kernel_size=0,sigma=(),brightness=(),contrast=0,mean=0,std=1):
-        """
-        :param augmentation_type: list of string contains the possible augmentation, it can be:
-            - Rotation (without a big angle)
-            - Gaussian blur
-            - Contrast and brightness
-            - GaussianNoise done
-        :param params: params of the augmentation
-        :return:
-        """
         self.augmentation_type = augmentation_type
         self.degrees = degrees
         self.kernel_size = kernel_size
