@@ -1,0 +1,9 @@
+torch~=2.0.1
+opencv-python~=4.8.0.76
+numpy~=1.25.2
+pandas~=2.0.3
+Pillow~=10.0.0
+torchvision~=0.15.2
+matplotlib~=3.7.2
+torchsummary~=1.5.1
+torchviz~=0.0.2
