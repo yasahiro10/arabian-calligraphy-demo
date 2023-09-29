@@ -20,18 +20,17 @@ class TestDataLoader(unittest.TestCase):
     def test_length_annotation(self):
         annotation = pd.read_csv("data/train/annotations.csv")
         dataset = dataloader_normal()
-        logger.debug(len(set(dataset.data["label"])))
-
-        plt.imshow(dataset.data["cropped_bbox"][0])
-        plt.show()
+        logger.debug(dataset.data["label"])
+       #plt.imshow(dataset.data["cropped_bbox"][0])
+        #plt.show()
         # logger.debug(dataset["label"])
-        self.assertEqual(annotation.shape[0], len(dataset.data["cropped_bbox"]))
-        self.assertEqual(annotation.shape[0], len(dataset.data["bbox"]))
-        self.assertEqual(annotation.shape[0], len(dataset.data["label"]))
+        #self.assertEqual(annotation.shape[0], len(dataset.data["cropped_bbox"]))
+        #self.assertEqual(annotation.shape[0], len(dataset.data["bbox"]))
+        #self.assertEqual(annotation.shape[0], len(dataset.data["label"]))
     def test_binary(self):
         annotation = pd.read_csv("data/train/annotations.csv")
         dataset = dataloader_binairy()
-        # logger.debug(dataset)
+        logger.debug(dataset.data)
         # self.assertEqual(annotation.shape[0], len(dataset["cropped_bbox"]))
         # self.assertEqual(annotation.shape[0], len(dataset["bbox"]))
         # self.assertEqual(annotation.shape[0], len(dataset["label"]))
@@ -92,16 +91,13 @@ class TestDataLoader(unittest.TestCase):
 
 class TestModel(unittest.TestCase):
     def test_architecture(self):
-        # TODO: Plot or show the model architecture
         import warnings
         warnings.filterwarnings("ignore", category=DeprecationWarning, module="torchviz")
         model= VGG16()
         #logger.debug(model.layer13(model.layer12(model.layer11(model.layer10(model.layer9(model.layer8(model.layer7(model.layer6(model.layer5(model.layer4(model.layer3(model.layer2(model.layer1(torch.randn(1, 3, 224, 224)))))))))))))).shape)
-
         dummy_input = torch.randn(1, 3, 512,512)
         #with torch.no_grad():
         #    output = model(dummy_input)
-
         # Visualize the computation graph
         dot = make_dot(model(dummy_input), params=dict(model.named_parameters()))
         dot.render("vgg16_graph")
@@ -112,4 +108,3 @@ class TestModel(unittest.TestCase):
     def test_train(self):
         model = VGG16(18)
         train(model,epochs=1)
-

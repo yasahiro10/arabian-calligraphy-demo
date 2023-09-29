@@ -1,6 +1,7 @@
 from torch import nn
 from src.utils.setup_logger import logger
 from torchsummary import summary
+from torch.nn import LazyLinear
 
 class VGG16(nn.Module):
     def __init__(self, num_classes=18):
@@ -69,15 +70,16 @@ class VGG16(nn.Module):
             nn.MaxPool2d(kernel_size=2, stride=2))
         self.fc1 = nn.Sequential(
             nn.Dropout(0.5),
-            nn.Linear(131072, 4096),
+            #nn.LazyLinear(1024),
+            nn.LazyLinear(4096,True),
             nn.ReLU()
         )
         self.fc2 = nn.Sequential(
             nn.Dropout(0.5),
-            nn.Linear(4096, 4096),
+            nn.LazyLinear(4096,True),
             nn.ReLU())
         self.fc3 = nn.Sequential(
-            nn.Linear(4096, num_classes))
+            nn.LazyLinear(num_classes))
 
 
 
@@ -97,7 +99,7 @@ class VGG16(nn.Module):
         out = self.layer13(out)
         logger.debug(f"out.shape {out.shape}")
         out = out.reshape(out.size(0), -1)
-        logger.debug(f"out.shape {out.shape}")
+        #logger.debug(f"out.shape {out.shape}")
         out = self.fc1(out)
         out = self.fc2(out)
         out = self.fc3(out)

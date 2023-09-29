@@ -48,13 +48,16 @@ def train(model, epochs = 10, batch_size = 1):
     for epoch in range(epochs):
         running_loss = 0.0
 
-        for i in range(len(dataloader["cropped_bbox"])):
-            inputs = dataloader.data["cropped_bbox"][i]
-            labels = dataloader.data["label"][i]
+        for i, data in enumerate(dataloader):
+            inputs, bbox, labels = data
 
             # Move data to the appropriate device
-            inputs, labels = inputs.to(device), labels.to(device)
-
+            inputs = inputs.permute(0, 3, 1, 2)
+            inputs = inputs.to(device)
+            label_mapping = {"AIN": 0, "alph": 1, "baa": 2, "daa":3 , "faa":4,"ha":5,"haa":6,"kaf":7,"La":8,"Meme":9,"Noun":10,"Qua":11,"Raa":12,"sad":13,"sin":14,"Ta":15,"waw":16,"ya":17}
+            labels = [label_mapping[label_str] for label_str in labels]
+            #labels = torch.tensor(labels)
+            labels = torch.tensor(labels).to(device)
             # Zero the parameter gradients
             optimizer.zero_grad()
 

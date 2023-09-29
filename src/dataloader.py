@@ -2,18 +2,20 @@ import cv2
 import numpy as np
 import pandas as pd
 from PIL import Image
+from torch.utils.data import Dataset
 from torchvision import transforms
 import torch
 
-class dataloader_normal():
+
+class dataloader_normal(Dataset):
     """ Simple dataloader which return original images"""
 
     def __init__(self):
         image_tensor = []
         to_tensor = transforms.ToTensor()
-        calligraphy_data= pd.read_csv('data/train/annotations.csv', delimiter=",")
-        for index,row in calligraphy_data.iterrows():
-            image_path=row['filename']
+        calligraphy_data = pd.read_csv('data/train/annotations.csv', delimiter=",")
+        for index, row in calligraphy_data.iterrows():
+            image_path = row['filename']
             xmin, ymin, xmax, ymax = row['xmin'], row['ymin'], row['xmax'], row['ymax']
             image = Image.open('data/train/{}'.format(image_path))
             cropped_image = image.crop((xmin, ymin, xmax, ymax))
@@ -21,8 +23,8 @@ class dataloader_normal():
 
         self.data = {
             "cropped_bbox": image_tensor,
-            "bbox": calligraphy_data.iloc[:,4:].values,
-            "label": calligraphy_data.iloc[:,3]
+            "bbox": calligraphy_data.iloc[:, 4:].values,
+            "label": calligraphy_data.iloc[:, 3]
         }
 
     def __getitem__(self, index):
@@ -31,20 +33,22 @@ class dataloader_normal():
     def __len__(self):
         return len(self.data["label"])
 
+
 class dataloader_binairy():
     """ Simple dataloader which return binary images"""
+
     def __init__(self):
         image_tensor = []
         to_tensor = transforms.ToTensor()
-        calligraphy_data= pd.read_csv('data/train/annotations.csv',
-                         delimiter=",")
+        calligraphy_data = pd.read_csv('data/train/annotations.csv',
+                                       delimiter=",")
         for index, row in calligraphy_data.iterrows():
             image_path = row['filename']
             xmin, ymin, xmax, ymax = row['xmin'], row['ymin'], row['xmax'], row['ymax']
-            image_jpeg= Image.open('data/train/{}'.format(image_path))
+            image_jpeg = Image.open('data/train/{}'.format(image_path))
             cropped_image = image_jpeg.crop((xmin, ymin, xmax, ymax))
             image_np = np.array(cropped_image)
-            image_gray=cv2.cvtColor(image_np,cv2.COLOR_BGR2GRAY)
+            image_gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
             # Convert the numpy array to a format compatible with OpenCV
             image = np.squeeze(image_gray)  # Remove any single-dimensional dimensions
             image = (image * 255).astype(np.uint8)
@@ -62,6 +66,7 @@ class dataloader_binairy():
     def __len__(self):
         return len(self.data["label"])
 
+
 class AddGaussianNoise(object):
     def __init__(self, mean=0., std=1.):
         self.std = std
@@ -73,8 +78,10 @@ class AddGaussianNoise(object):
     def __repr__(self):
         return self.__class__.__name__ + '(mean={0}, std={1})'.format(self.mean, self.std)
 
+
 class dataloader_augmented:
-    def  __init__(self, augmentation_type=[],degrees=0,kernel_size=0,sigma=(),brightness=(),contrast=0,mean=0,std=1):
+    def __init__(self, augmentation_type=[], degrees=0, kernel_size=0, sigma=(), brightness=(), contrast=0, mean=0,
+                 std=1):
         self.augmentation_type = augmentation_type
         self.degrees = degrees
         self.kernel_size = kernel_size
@@ -82,19 +89,19 @@ class dataloader_augmented:
         self.brightness = brightness
         self.contrast = contrast
         self.mean = mean
-        self.std=std
-        Rotate_Transformation =transforms.RandomRotation(degrees= degrees)
-        Gaussian_transformation =transforms.GaussianBlur(kernel_size = kernel_size, sigma=sigma)
-        Color_Transformation =transforms.ColorJitter(brightness=brightness,contrast=contrast)
+        self.std = std
+        Rotate_Transformation = transforms.RandomRotation(degrees=degrees)
+        Gaussian_transformation = transforms.GaussianBlur(kernel_size=kernel_size, sigma=sigma)
+        Color_Transformation = transforms.ColorJitter(brightness=brightness, contrast=contrast)
 
-        AddGaussianNoise_Transformation= transforms.Compose([
-             transforms.ToTensor(),
-             AddGaussianNoise(mean,std),
-             transforms.ToPILImage()
-         ])
+        AddGaussianNoise_Transformation = transforms.Compose([
+            transforms.ToTensor(),
+            AddGaussianNoise(mean, std),
+            transforms.ToPILImage()
+        ])
         image_tensor = []
-        bbox_list=[]
-        label_list=[]
+        bbox_list = []
+        label_list = []
         to_tensor = transforms.ToTensor()
         calligraphy_data = pd.read_csv('data/train/annotations.csv', delimiter=",")
         for index, row in calligraphy_data.iterrows():
@@ -103,7 +110,7 @@ class dataloader_augmented:
             image_jpeg = Image.open('data/train/{}'.format(image_path))
             cropped_image = image_jpeg.crop((xmin, ymin, xmax, ymax))
             for item in augmentation_type:
-                if item =="Rotation":
+                if item == "Rotation":
                     Rotated_Img = Rotate_Transformation(cropped_image)
                     image_tensor.append(to_tensor(Rotated_Img).numpy().transpose(1, 2, 0))
                     bbox_list.append([xmin, ymin, xmax, ymax])
@@ -113,13 +120,13 @@ class dataloader_augmented:
                     image_tensor.append(to_tensor(Gaussian_image).numpy().transpose(1, 2, 0))
                     bbox_list.append([xmin, ymin, xmax, ymax])
                     label_list.append(row['class'])
-                if item ==  "ColorJitter":
+                if item == "ColorJitter":
                     color_image = Color_Transformation(cropped_image)
                     image_tensor.append(to_tensor(color_image).numpy().transpose(1, 2, 0))
                     bbox_list.append([xmin, ymin, xmax, ymax])
                     label_list.append(row['class'])
                 if item == "GaussianNoise":
-                    noise_image= AddGaussianNoise_Transformation(cropped_image)
+                    noise_image = AddGaussianNoise_Transformation(cropped_image)
                     image_tensor.append(to_tensor(noise_image).float().numpy().transpose(1, 2, 0))
                     bbox_list.append([xmin, ymin, xmax, ymax])
                     label_list.append(row['class'])
@@ -127,8 +134,10 @@ class dataloader_augmented:
             "cropped_bbox": image_tensor,
             "bbox": bbox_list,
             "label": label_list
-            }
+        }
+
     def __getitem__(self, index):
         return self.data["cropped_bbox"][index], self.data["bbox"][index], self.data["label"][index]
+
     def __len__(self):
         return len(self.data["label"])
