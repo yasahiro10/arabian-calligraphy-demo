@@ -54,8 +54,11 @@ def train(model, epochs = 10, batch_size = 1):
             # Move data to the appropriate device
             inputs = inputs.permute(0, 3, 1, 2)
             inputs = inputs.to(device)
-            label_mapping = {"AIN": 0, "alph": 1, "baa": 2, "daa":3 , "faa":4,"ha":5,"haa":6,"kaf":7,"La":8,"Meme":9,"Noun":10,"Qua":11,"Raa":12,"sad":13,"sin":14,"Ta":15,"waw":16,"ya":17}
+            label_mapping = {"AIN": 0, "alph": 1, "baa": 2, "daa": 3, "faa": 4, "ha": 5, "Haa": 6, "Kaf": 7, "La": 8,
+                             "Meme": 9, "Noun": 10, "Qua": 11, "Raa": 12, "sad": 13, "sin": 14, "Ta": 15, "waw": 16,
+                             "ya": 17}
             labels = [label_mapping[label_str] for label_str in labels]
+            logger.debug(labels)
             #labels = torch.tensor(labels)
             labels = torch.tensor(labels).to(device)
             # Zero the parameter gradients

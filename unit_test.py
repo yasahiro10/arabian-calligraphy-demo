@@ -2,7 +2,7 @@ import unittest
 from matplotlib import pyplot as plt
 import pandas as pd
 from src.dataloader import dataloader_normal,dataloader_binairy,dataloader_augmented
-from src.models import VGG16
+from src.models import VGG16,VGg16
 from src.utils.setup_logger import logger
 from torchviz import  make_dot
 import torch
@@ -23,7 +23,7 @@ class TestDataLoader(unittest.TestCase):
         logger.debug(dataset.data["label"])
        #plt.imshow(dataset.data["cropped_bbox"][0])
         #plt.show()
-        # logger.debug(dataset["label"])
+        logger.debug(tuple(dataset["label"]))
         #self.assertEqual(annotation.shape[0], len(dataset.data["cropped_bbox"]))
         #self.assertEqual(annotation.shape[0], len(dataset.data["bbox"]))
         #self.assertEqual(annotation.shape[0], len(dataset.data["label"]))
@@ -106,5 +106,5 @@ class TestModel(unittest.TestCase):
 
 
     def test_train(self):
-        model = VGG16(18)
+        model = VGg16(18)
         train(model,epochs=1)
