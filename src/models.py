@@ -1,5 +1,5 @@
 from torch import nn
-from torch.nn import init
+
 from src.utils.setup_logger import logger
 from torchsummary import summary
 class VGG16(nn.Module):
@@ -69,12 +69,12 @@ class VGG16(nn.Module):
                 nn.MaxPool2d(kernel_size=2, stride=2))
         self.fc1 = nn.Sequential(
             nn.Dropout(0.5),
-            nn.LazyLinear(4096),
+            nn.LazyLinear(512),
             nn.ReLU()
         )
         self.fc2 = nn.Sequential(
             nn.Dropout(0.5),
-            nn.LazyLinear(4096),
+            nn.LazyLinear(412),
             nn.ReLU()
         )
         self.fc3 = nn.Sequential(
@@ -93,10 +93,10 @@ class VGG16(nn.Module):
         out = self.layer7(out)
         out = self.layer8(out)
         out = self.layer9(out)
-        out = self.layer10(out)
-        out = self.layer11(out)
-        out = self.layer12(out)
-        out = self.layer13(out)
+        #out = self.layer10(out)
+        #out = self.layer11(out)
+        #out = self.layer12(out)
+        #out = self.layer13(out)
         logger.debug(f"out.shape {out.shape}")
         out = out.reshape(out.size(0), -1)
         logger.debug(f"out.shape {out.shape}")
@@ -172,9 +172,6 @@ class VGg16(nn.Module):
         self.classifier = nn.Sequential(
             nn.Dropout(0.5),
             nn.LazyLinear(256),
-#            nn.ReLU(),
-#            nn.Dropout(0.5),
-#            nn.LazyLinear(4096),
             nn.ReLU(),
             nn.LazyLinear(num_classes))
 

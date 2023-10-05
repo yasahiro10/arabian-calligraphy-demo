@@ -107,4 +107,4 @@ class TestModel(unittest.TestCase):
 
     def test_train(self):
         model = VGg16(18)
-        train(model,epochs=1)
+        train(model, epochs=1)

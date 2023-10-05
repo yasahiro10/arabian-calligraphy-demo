@@ -13,7 +13,7 @@ class dataloader_normal(Dataset):
     def __init__(self):
         image_tensor = []
         to_tensor = transforms.ToTensor()
-        calligraphy_data = pd.read_csv('data/train/annotations.csv', delimiter=",")
+        calligraphy_data = pd.read_csv("data/train/_annotations.csv", delimiter=",")
         for index, row in calligraphy_data.iterrows():
             image_path = row['filename']
             xmin, ymin, xmax, ymax = row['xmin'], row['ymin'], row['xmax'], row['ymax']
@@ -40,8 +40,7 @@ class dataloader_binairy():
     def __init__(self):
         image_tensor = []
         to_tensor = transforms.ToTensor()
-        calligraphy_data = pd.read_csv('data/train/annotations.csv',
-                                       delimiter=",")
+        calligraphy_data = pd.read_csv("data/train/_annotations.csv", delimiter=",")
         for index, row in calligraphy_data.iterrows():
             image_path = row['filename']
             xmin, ymin, xmax, ymax = row['xmin'], row['ymin'], row['xmax'], row['ymax']
@@ -103,7 +102,7 @@ class dataloader_augmented:
         bbox_list = []
         label_list = []
         to_tensor = transforms.ToTensor()
-        calligraphy_data = pd.read_csv('data/train/annotations.csv', delimiter=",")
+        calligraphy_data = pd.read_csv("data/train/_annotations.csv", delimiter=",")
         for index, row in calligraphy_data.iterrows():
             image_path = row['filename']
             xmin, ymin, xmax, ymax = row['xmin'], row['ymin'], row['xmax'], row['ymax']
@@ -141,3 +140,4 @@ class dataloader_augmented:
 
     def __len__(self):
         return len(self.data["label"])
+
