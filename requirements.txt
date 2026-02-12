@@ -1,3 +1,15 @@
+matplotlib
+numpy
+pandas
+torch
+torchvision
+transformers
+Pillow
+datasets
+pytube
+moviepy
+Unidecode
+scikit-learn
 torch~=2.0.1
 opencv-python~=4.8.0.76
 numpy~=1.25.2

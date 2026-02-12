@@ -64,9 +64,9 @@ def train(model, epochs = 10, batch_size = 1,validation_split = 0.2):
             loss.backward()
             optimizer.step()
 
-            # Print statistics
+            # logger.debug statistics
             running_loss += loss.item()
-            if i % 100 == 99:  # Print every 100 mini-batches
+            if i % 100 == 99:  # logger.debug every 100 mini-batches
                 logger.debug(f"[Epoch {epoch + 1}, Batch {i + 1}] Loss: {running_loss / 100:.4f}")
                 running_loss = 0.0
         train_loss = running_loss / len(train_dataloader)
@@ -172,4 +172,4 @@ def train(model, epochs = 10, batch_size = 1,validation_split = 0.2):
         plt.tight_layout()
         plt.show()
 
-    print('Accuracy of the network on the {} validation images: {} %'.format(5000, 100 * correct / total))
+    logger.debug('Accuracy of the network on the {} validation images: {} %'.format(5000, 100 * correct / total))
